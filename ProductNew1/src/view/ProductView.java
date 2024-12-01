@@ -192,8 +192,51 @@ public class ProductView extends JFrame {
 
     // Phương thức lưu sản phẩm
     private void saveProduct() {
-        // Code lưu sản phẩm ở đây
+        try {
+            // Lấy dữ liệu từ các trường nhập liệu
+            String maSanPham = txtMaSanPham.getText().trim();
+            String tenSanPham = txtTenSanPham.getText().trim();
+            String loaiSanPham = txtLoaiSanPham.getText().trim();
+            String hangSanXuat = txtHangSanXuat.getText().trim();
+            double giaNhap = Double.parseDouble(txtGiaNhap.getText().trim());  // Chuyển đổi sang kiểu double
+            double giaBan = Double.parseDouble(txtGiaBan.getText().trim());      // Chuyển đổi sang kiểu double
+            int tonKho = Integer.parseInt(txtTonKho.getText().trim());          // Chuyển đổi sang kiểu int
+            String trangThai = txtTrangThai.getText().trim();
+            String chuThich = txtChuThich.getText().trim();
+
+            // Kiểm tra các trường nhập liệu có trống không
+            if (maSanPham.isEmpty() || tenSanPham.isEmpty() || loaiSanPham.isEmpty() ||
+                hangSanXuat.isEmpty() || trangThai.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return; // Không tiếp tục nếu có trường trống
+            }
+
+            // Tạo đối tượng Product mới
+            Product newProduct = new Product(maSanPham, tenSanPham, loaiSanPham, hangSanXuat,
+                                             giaNhap, giaBan, tonKho, trangThai, chuThich);
+
+            // Lưu sản phẩm vào cơ sở dữ liệu thông qua Controller
+            controller.addProduct(newProduct);
+
+            // Thông báo thành công
+            JOptionPane.showMessageDialog(this, "Sản phẩm đã được lưu thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+
+            // Xóa các trường nhập liệu sau khi lưu
+            txtMaSanPham.setText("");
+            txtTenSanPham.setText("");
+            txtLoaiSanPham.setText("");
+            txtHangSanXuat.setText("");
+            txtGiaNhap.setText("");
+            txtGiaBan.setText("");
+            txtTonKho.setText("");
+            txtTrangThai.setText("");
+            txtChuThich.setText("");
+        } catch (NumberFormatException e) {
+            // Xử lý lỗi khi chuyển đổi kiểu dữ liệu (ví dụ, nhập giá không phải là số)
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng cho giá nhập, giá bán và tồn kho!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
     }
+
 
     // Phương thức hiển thị tất cả sản phẩm
     private void displayProducts() {
